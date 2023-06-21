@@ -6,7 +6,7 @@ const { BigNumber } = require("ethers");
 !developmentChains.includes(network.name)
 	? describe.skip
 	: describe("MetaToken and MetaFactory Test", function () {
-			let MetaToken, MetaFactory, token, factory, deployer, user1;
+			let MetaToken, MetaFactory, token, factory;
 
 			const createMetaToken = async (initialSupply) => {
 				const txResponse = await factory.createMeta(initialSupply);
@@ -75,7 +75,6 @@ const { BigNumber } = require("ethers");
 			});
 			it("Should not allow initialize to be called twice", async function () {
 				const initialSupply = 1000;
-				await token.initialize(initialSupply);
 
 				await expect(token.initialize(initialSupply)).to.be.revertedWith(
 					"Initializable: contract is already initialized"

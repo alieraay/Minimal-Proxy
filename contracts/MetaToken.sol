@@ -7,9 +7,11 @@ import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 // MetaToken is an ERC20 token which uses the Initializable contract from OpenZeppelin.
 // This makes it suitable to be used with a minimal proxy pattern.
 contract MetaToken is ERC20, Initializable {
-    // The constructor sets the token name and symbol. 
+    // The constructor sets the token name and symbol.
     // These cannot be changed after deployment.
-    constructor() ERC20("MetaToken", "META") {}
+    constructor() ERC20("MetaToken", "META") {
+        _disableInitializers();
+    }
 
     // The initialize function sets the initial supply of tokens.
     // It uses the initializer modifier from the Initializable contract to ensure
@@ -19,5 +21,4 @@ contract MetaToken is ERC20, Initializable {
     function initialize(uint256 totalSupply) public initializer {
         _mint(address(this), totalSupply * 10 ** uint(decimals()));
     }
-    
 }
