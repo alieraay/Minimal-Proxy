@@ -2,7 +2,9 @@ require("hardhat-deploy");
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-waffle");
 require("dotenv").config();
-require("solidity-coverage")
+require("solidity-coverage");
+require("@nomiclabs/hardhat-etherscan")
+
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const GOERLI_URL = process.env.GOERLI_URL;
@@ -20,15 +22,15 @@ module.exports = {
 		},
 		goerli: {
 			url: GOERLI_URL,
-			acconts: [PRIVATE_KEY],
+			accounts: [PRIVATE_KEY],
 			chainId: 5,
 			blockConfirmations: 6,
-      saveDeployments: true,
-
+			saveDeployments: true,
 		},
 	},
 	etherscan: {
-		apiKey: ETHERSCAN_API_KEY,
+		apiKey: {
+			goerli: ETHERSCAN_API_KEY,
+		},
 	},
-
 };

@@ -6,9 +6,11 @@ require("dotenv").config();
 module.exports = async ({ getNamedAccounts, deployments }) => {
 	const { deploy, log } = deployments;
 	const { deployer } = await getNamedAccounts();
+    const args = []
 
 	const metaToken = await deploy("MetaToken", {
 		from: deployer,
+        args:args,
 		log: true,
 		waitConfirmations: network.config.blockConfirmations || 1,
 	});
@@ -18,7 +20,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 		!developmentChains.includes(network.name) &&
 		process.env.ETHERSCAN_API_KEY
 	) {
-		await verify(metaToken.address);
+		await verify(metaToken.address,args);
 		log("-------------------------------------------------");
 	}
 };

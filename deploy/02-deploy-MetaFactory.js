@@ -9,15 +9,10 @@ require("dotenv").config();
 module.exports = async ({ getNamedAccounts, deployments }) => {
 	const { deploy, log } = deployments;
 	const { deployer } = await getNamedAccounts();
-	const chainId = network.config.chainId;
 	let metaTokenAddress;
 
-	if (developmentChains.includes(network.name)) {
-		const metaToken = await deployments.get("MetaToken");
-		metaTokenAddress = metaToken.address;
-	} else {
-		metaTokenAddress = networkConfig[chainId]["baseContract"];
-	}
+	const metaToken = await deployments.get("MetaToken");
+	metaTokenAddress = metaToken.address;
 
 	const args = [metaTokenAddress];
 

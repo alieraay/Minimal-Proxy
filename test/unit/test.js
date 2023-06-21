@@ -1,23 +1,19 @@
 const { assert, expect } = require("chai");
 const { ethers, deployments, getNamedAccounts, network } = require("hardhat");
-const {
-	developmentChains,
-	networkConfig,
-} = require("../../helper-hardhat-config");
+const { developmentChains } = require("../../helper-hardhat-config");
 const { BigNumber } = require("ethers");
 
 !developmentChains.includes(network.name)
 	? describe.skip
 	: describe("MetaToken and MetaFactory Test", function () {
 			let MetaToken, MetaFactory, token, factory, deployer, user1;
-			const chainId = network.config.chainId;
 
-            const createMetaToken = async (initialSupply) => {
-                const txResponse = await factory.createMeta(initialSupply);
-                const txReceipt = await txResponse.wait(1);
-                const newTokenAddress = txReceipt.events[0].address;
-                return ethers.getContractAt("MetaToken", newTokenAddress);
-            };
+			const createMetaToken = async (initialSupply) => {
+				const txResponse = await factory.createMeta(initialSupply);
+				const txReceipt = await txResponse.wait(1);
+				const newTokenAddress = txReceipt.events[0].address;
+				return ethers.getContractAt("MetaToken", newTokenAddress);
+			};
 
 			beforeEach(async function () {
 				deployer = (await getNamedAccounts()).deployer;
@@ -42,7 +38,7 @@ const { BigNumber } = require("ethers");
 			it("Should create a new MetaToken using MetaFactory", async function () {
 				const initialSupply = 1000;
 
-				const NewToken = await createMetaToken(initialSupply)
+				const NewToken = await createMetaToken(initialSupply);
 				const checkInitial = BigNumber.from(10).pow(18).mul(initialSupply);
 				console.log(await NewToken.totalSupply());
 				console.log(checkInitial);
