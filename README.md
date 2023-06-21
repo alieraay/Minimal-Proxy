@@ -8,3 +8,6 @@ You can find my progress in this section, I will try to write down my progress i
 * I need an initializer to give constructor parameters to new versions
 * deploy scripts were prepared
 * Token contract and factory contract is ready now I will write tests with js
+* Tests were successful
+* It seems that the task assigned to me is now finished.
+What to do next: Typescript version, controls, improvements 
