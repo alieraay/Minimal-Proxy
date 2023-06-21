@@ -9,5 +9,6 @@ You can find my progress in this section, I will try to write down my progress i
 * deploy scripts were prepared
 * Token contract and factory contract is ready now I will write tests with js
 * Tests were successful
+* ![Alt text](image.png)
 * It seems that the task assigned to me is now finished.
 What to do next: Typescript version, controls, improvements 
