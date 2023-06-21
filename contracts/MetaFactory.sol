@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0 ;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
@@ -20,31 +20,37 @@ contract MetaFactory {
     // Maps an ID to the total supply of a created contract.
     mapping(uint256 => uint256) idToTotalSupply;
 
+    // Event that is emitted when a new MetaToken is created
+    event MetaCreated(address indexed cloneAddress, uint256 indexed contractId, uint256 totalSupply);
+
     // The constructor initializes the factory with the address of the base contract.
-    constructor(address baseContract){
+    constructor(address baseContract) {
         i_MetaTokenContract = baseContract;
     }
 
     // The createMeta function creates a new MetaToken contract with the specified total supply.
     // It increments the contract count and stores the created contract's address and total supply in the mappings.
-    // It returns the address of the created contract.
+    // It emits a MetaCreated event and returns the address of the created contract.
     function createMeta(uint setTotalSupply) public returns(address) {
         address cloneAddress = Clones.clone(i_MetaTokenContract);
         MetaToken(cloneAddress).initialize(setTotalSupply);
         contractCount++;
         idToContractAddress[contractCount] = cloneAddress;
         idToTotalSupply[contractCount] = setTotalSupply;
+
+        emit MetaCreated(cloneAddress, contractCount, setTotalSupply);
+
         return cloneAddress;
     }
 
     // The viewCloneAddress function returns the address of a created contract given its ID.
-    function viewCloneAddress(uint256 id) public view returns(address){
+    function viewCloneAddress(uint256 id) public view returns(address) {
         return idToContractAddress[id];
     }
 
     // The viewCloneTotalSupply function returns the total supply of a created contract given its ID.
     // It does this by calling the totalSupply function on the MetaToken contract at the stored address.
-    function viewCloneTotalSupply(uint256 id) public view returns(uint256){
+    function viewCloneTotalSupply(uint256 id) public view returns(uint256) {
         return MetaToken(idToContractAddress[id]).totalSupply();
     }
 }
