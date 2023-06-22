@@ -16,18 +16,13 @@ const { BigNumber } = require("ethers");
 			};
 
 			beforeEach(async function () {
-				deployer = (await getNamedAccounts()).deployer;
-				accounts = ethers.getSigners();
-				user1 = accounts[1];
 				await deployments.fixture(["all"]);
 
 				MetaToken = await ethers.getContractFactory("MetaToken");
 				token = await MetaToken.deploy();
-				await token.deployed();
 
 				MetaFactory = await ethers.getContractFactory("MetaFactory");
 				factory = await MetaFactory.deploy(token.address);
-				await factory.deployed();
 			});
 
 			it("Should initialize the MetaToken correctly", async function () {
