@@ -1,14 +1,15 @@
-const { assert, expect } = require("chai");
-const { ethers, deployments, getNamedAccounts, network } = require("hardhat");
-const { developmentChains } = require("../../helper-hardhat-config");
-const { BigNumber } = require("ethers");
+import { assert, expect } from "chai";
+
+import { deployments, ethers, network } from "hardhat";
+import { developmentChains } from "../../helper-hardhat-config";
+import { BigNumber, Contract } from "ethers";
 
 !developmentChains.includes(network.name)
 	? describe.skip
 	: describe("MetaToken and MetaFactory Test", function () {
-			let MetaToken, MetaFactory, token, factory;
+			let MetaToken, MetaFactory, token: Contract, factory: Contract;
 
-			const createMetaToken = async (initialSupply) => {
+			const createMetaToken = async (initialSupply: number) => {
 				const txResponse = await factory.createMeta(initialSupply);
 				const txReceipt = await txResponse.wait(1);
 				const newTokenAddress = txReceipt.events[0].address;
@@ -16,18 +17,13 @@ const { BigNumber } = require("ethers");
 			};
 
 			beforeEach(async function () {
-				deployer = (await getNamedAccounts()).deployer;
-				accounts = ethers.getSigners();
-				user1 = accounts[1];
 				await deployments.fixture(["all"]);
 
 				MetaToken = await ethers.getContractFactory("MetaToken");
 				token = await MetaToken.deploy();
-				await token.deployed();
 
 				MetaFactory = await ethers.getContractFactory("MetaFactory");
 				factory = await MetaFactory.deploy(token.address);
-				await factory.deployed();
 			});
 
 			it("Should initialize the MetaToken correctly", async function () {
@@ -64,8 +60,8 @@ const { BigNumber } = require("ethers");
 				const txResponse = await factory.createMeta(initialSupply);
 				const txReceipt = await txResponse.wait(1);
 
-				const newTokenAddress = txReceipt.events[0].address;
-				const NewToken = await ethers.getContractAt(
+				const newTokenAddress: string = txReceipt.events[0].address;
+				const NewToken: Contract = await ethers.getContractAt(
 					"MetaToken",
 					newTokenAddress
 				);
